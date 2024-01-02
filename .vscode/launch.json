@@ -1,0 +1,39 @@
+{
+    "version": "0.2.0",
+    "configurations": [      
+      {
+        "name": "Visual C/C++",
+        "type": "cppvsdbg",
+        "request": "launch",
+        "program": "${workspaceFolder}/../LuaRT/bin/wluart.exe",
+        "args": ["${workspaceFolder}/main.wlua"],
+        "cwd": "${workspaceFolder}/",
+        "stopAtEntry": false,
+        "environment": [],        
+        "logging": {
+          "moduleLoad": false
+        }
+      },
+      {
+        "name": "Mingw64 - GCC",
+        "type": "cppdbg",
+        "request": "launch",
+        "program": "${workspaceFolder}/bin/luart.exe",
+        "args": ["${workspaceFolder}/examples/net/geo.lua"],
+        "cwd": "${workspaceFolder}",
+        "stopAtEntry": false,
+        "environment": [],
+        "externalConsole": false,
+        "MIMode": "gdb",
+        "miDebuggerPath": "D:\\mingw32\\bin\\gdb.exe",
+        "setupCommands": [
+            {
+                "description": "Activer l'impression en mode Pretty pour gdb",
+                "text": "-enable-pretty-printing",
+                "ignoreFailures": true
+            }
+        ],
+        "preLaunchTask": ""
+    }
+    ]
+  }
