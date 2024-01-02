@@ -6,6 +6,7 @@
 # | Please set LUART_PATH to your LuaRT folder if autodetection fails
 # |--------------------------------------------------------------
 # | Usage (default release build)			 : make
+# | Usage (create release package)		 	 : make package
 # | Usage (clean all)	 				 	 : make clean
 # |-------------------------------------------------------------
 
@@ -30,6 +31,15 @@ CP= copy /Y
 LC= $(LUART_PATH)\bin\rtc.exe
 
 all: $(TARGET)
+
+infopackage:
+	@chcp 65001 >nul 2>&1
+	@cmd /c echo.
+	@echo|set /p dummy="▸  Building release package       "
+
+package: $(TARGET) infopackage
+	@$(LUART_PATH)\bin\luart.exe contrib\package.lua
+	@cmd /c echo.
 
 infomodule: 
 	@chcp 65001 >nul 2>&1
