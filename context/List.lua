@@ -39,11 +39,7 @@ menu:add("Edit List items...").onClick = function(self)
     end
     ui.Button(win, "Cancel", 290, 228, 80).onClick = function(self)
         if ui.confirm("All modifications made to the List will not be saved.\nAre you sure to continue ?") == "yes" then
-            Widget.items = olditems
             Widget.icons = oldicons
-            for i=1, Widget.count do
-                Widget.items[i]:loadicon(oldicons[i])
-            end
             win:hide()
         end
     end
@@ -56,6 +52,7 @@ menu:add("Edit List items...").onClick = function(self)
     local panel = ui.Panel(gb, label2.x + label2.width+6, label2.y, 16, 16)
     local ico = ui.Picture(panel, "setup/img/logo.ico")
     panel.cursor = "hand"
+    ico.cursor = "hand"
     ico.align = "all"
     local icobtn = ui.Button(gb, "Remove icon", panel.x+30, label2.y-5, 90)
     local label3 = ui.Label(gb, "Item position :", 10, 100)
@@ -70,7 +67,9 @@ menu:add("Edit List items...").onClick = function(self)
     ui.Button(gb, "Delete Item", 60, 148, 80).onClick = function(self)
         local pos = tonumber(entry2.text)-1
         if pos == 0 then pos = 1 end
-        list:remove(list.selected)
+        local sel = list.selected.index
+        table.remove(Widget.icons, sel)
+        list:remove(sel)
         if list.count > 0 then
             list.selected = list.items[pos]
         else
@@ -121,11 +120,12 @@ menu:add("Edit List items...").onClick = function(self)
         if file then
             local sel = list.selected
             sel:loadicon(file)
-            Widget.icons[sel.index] = file.fullpath
+            Widget.icons[sel.index] = file.fullpath:gsub("\\", "/")
             ico:load(file.fullpath)
             ico:show()
             icobtn:show()
             panel.border = false
+            Widget.style = "icons"
         end
     end
 
@@ -155,6 +155,13 @@ end
 
 menu:add("Sort items in inverse order\xe2\x96\xbe").onClick = function(self)
     Widget:sort("descend")
+end
+
+menu:add("Clear all items").onClick = function(self)
+    if Widget.count and ui.confirm("Are you sure to remove all Tab items ?") == "yes" then
+        Widget:clear()
+        inspector.panels.List.widgets.selected.update(Widget)
+    end
 end
 
 return function(self)

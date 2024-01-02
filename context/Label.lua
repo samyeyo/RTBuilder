@@ -13,6 +13,7 @@ menu:add("Autosize").onClick = function(self)
     Widget.x = x
     Widget.y = y
     tracker:start(Widget)
+    inspector:onTrack(Widget)
 end
 
 menu:add("Center").onClick = function(self)

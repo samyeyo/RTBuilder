@@ -4,8 +4,8 @@ local menu = ui.Menu()
 local Widget
 
 -- create a menu item 
-menu:add("Set icon...").onClick = function(self)
-    local win = ui.Window("Load icon...", "fixed", 300, 200)
+menu:add("Set Window icon...").onClick = function(self)
+    local win = ui.Window("Set Window icon...", "fixed", 300, 200)
     win:center()
     local gb = ui.Groupbox(win, "", 10, 4, 160, 188)
     local icon = ui.Picture(gb, Widget.icon or "", 0, 0, 16, 16)
@@ -17,10 +17,8 @@ menu:add("Set icon...").onClick = function(self)
     okbtn.enabled = false
     
     function okbtn:onClick(self)
-        tracker:stop()
-        tracker:start(Widget)
-        Widget.icon = icofile
         Widget:loadicon(icofile)
+        Widget.icon = icofile
         win:hide()
     end
 
@@ -46,27 +44,22 @@ menu:add("Set icon...").onClick = function(self)
             okbtn.enabled = true
             icon:load(icofile, 16, 16)
             icon:center()
+            icon:show()
             delbtn:show()
         end
     end    
     formWindow:showmodal(win)
 end
 
-menu:add("Autosize").onClick = function(self)
-    tracker:stop()
-    local x = Widget.x
-    local y = Widget.y
-    Widget.align = nil
-    Widget:autosize()
-    Widget.x = x
-    Widget.y = y
-    tracker:start(Widget)
-end
-
-menu:add("Center").onClick = function(self)
-    tracker:stop()
-    Widget:center()
-    tracker:start(Widget)
+menu:add("Show status bar").onClick = function(item)
+    Widget._status = not Widget._status
+    if Widget._status then
+        item.text = "Hide status bar"
+        Widget:status("")
+    else
+        item.text = "Show status bar"
+        Widget:status()
+    end
 end
 
 return function(self)

@@ -20,26 +20,23 @@ menu:add("Edit Tree items...").onClick = function(self)
         return count
     end
     
-    local function assign(from, to, icons)
+    local function assign(from, to)
         for item in each(from.items or from.subitems) do
-            local ico = icons[getcurindex(item)]
-            local new = to:add(item.text):loadicon(ico)
+            local ico = Widget.icons[item.index]
+            local new = to:add(item.text)
+            new:loadicon(ico)
             if item.count > 0 then
-                assign(node, new, icons.subitems)          
+                assign(item, new)          
             end
         end
     end
     
     local win = ui.Window("Tree items editor", "fixed", 490, 300)
-    Widget = ui.Tree(win, {})
-    Widget:hide()
     Widget.icons = Widget.icons or {}
     local oldicons = Widget.icons
     win:center()
-    local olditems = {}
-    local items = Widget.items
     tree = ui.Tree(win, {}, 10, 10, 260, 250)
-    assign(Widget, tree, Widget.icons)
+    assign(Widget, tree)
     if tree.count > 0 then
         tree.selected = tree.items[1]
     end
@@ -53,17 +50,16 @@ menu:add("Edit Tree items...").onClick = function(self)
     end
     ui.Button(win, "OK", 300, 268, 80).onClick = function(self)
         Widget:clear()
-        assign(tree, Widget, Widget.icons)
+        assign(tree, Widget)
+        if #Widget.icons > 0 then
+            Widget.style = "icons"
+        end
         inspector.Update(Widget)
         win:hide()
     end
     ui.Button(win, "Cancel", 390, 268, 80).onClick = function(self)
         if ui.confirm("All modifications made to the Tree will not be saved.\nAre you sure to continue ?") == "yes" then
-            Widget.items = olditems
             Widget.icons = oldicons
-            for i=1, Widget.count do
-                Widget.items[i]:loadicon(oldicons[i])
-            end
             win:hide()
         end
     end
@@ -76,6 +72,7 @@ menu:add("Edit Tree items...").onClick = function(self)
     local panel = ui.Panel(gb, label2.x + label2.width+6, label2.y, 16, 16)
     local ico = ui.Picture(panel, "setup/img/logo.ico")
     panel.cursor = "hand"
+    ico.cursor = "hand"
     ico.align = "all"
     local icobtn = ui.Button(gb, "Remove icon", panel.x+30, label2.y-5, 90)
     
@@ -86,9 +83,9 @@ menu:add("Edit Tree items...").onClick = function(self)
     
     ui.Button(gb, "Delete Item", 60, 148, 80).onClick = function(self)
         local sel = tree.selected
-        local idx = getcurindex(sel)
+        local idx = sel.index
         local newicons = {}
-        if idx < tree.count then
+        if idx <= tree.count then
             local newicons = {}
             Widget.icons[idx] = nil
             for k, v in pairs(Widget.icons) do
@@ -109,7 +106,7 @@ menu:add("Edit Tree items...").onClick = function(self)
         local new = tree.selected:add("New sub item")
         tree.selected = new.parent
         new:show()
-        local idx = getcurindex(new)
+        local idx = new.index
         if idx < tree.count then
             local newicons = {}
             for k, v in pairs(Widget.icons) do
@@ -168,7 +165,7 @@ menu:add("Edit Tree items...").onClick = function(self)
     function tree:onSelect(item)
         gb:show()
         entry.text = item.text
-        if Widget.icons[getcurindex(item)] == nil then
+        if Widget.icons[item.index] == nil then
             ico:hide()
             panel.border = true
             icobtn:hide()
@@ -176,7 +173,7 @@ menu:add("Edit Tree items...").onClick = function(self)
             ico:show()
             panel.border = false
             icobtn:show()
-            ico:load(Widget.icons[getcurindex(item)])
+            ico:load(Widget.icons[item.index])
         end
     end
     
@@ -184,9 +181,8 @@ menu:add("Edit Tree items...").onClick = function(self)
         local file = ui.opendialog("Load icon...", false, "Icon files (*.ico)|*.ico|All files (*.*)|*.*")
         if file then
             local sel = tree.selected
-            sel:loadicon(file)
-            local idx = getcurindex(sel)
-            Widget.icons[idx] = file.fullpath
+            local idx = sel.index
+            Widget.icons[idx] = file.fullpath:gsub("\\", "/")
             ico:load(file.fullpath)
             ico:show()
             icobtn:show()
@@ -200,7 +196,7 @@ menu:add("Edit Tree items...").onClick = function(self)
         ico:hide()
         panel.border = true
         self:hide()
-        Widget.icons[getcurindex(sel)] = nil
+        Widget.icons[sel.index] = nil
     end
     
     panel.onClick = ico.onClick
@@ -211,6 +207,20 @@ menu:add("Center").onClick = function(self)
     tracker:stop()
     Widget:center()
     tracker:start(Widget)
+end
+
+menu:add("Sort items in alphabetical order\xe2\x96\xb4").onClick = function(self)
+    Widget:sort("ascend")
+end
+
+menu:add("Sort items in inverse order\xe2\x96\xbe").onClick = function(self)
+    Widget:sort("descend")
+end
+
+menu:add("Clear all items").onClick = function(self)
+    if ui.confirm("Are you sure to remove all Tree items ?") == "yes" then
+        Widget:clear()
+    end
 end
 
 return function(self)

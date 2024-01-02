@@ -4,8 +4,8 @@ local menu = ui.Menu()
 local Widget
 
 -- create a menu item 
-menu:add("Edit Tab items...").onClick = function(self)
-    local win = ui.Window("Tab items editor", "fixed", 400, 260)
+menu:add("Edit Combobox items...").onClick = function(self)
+    local win = ui.Window("Combobox items editor", "fixed", 400, 260)
     Widget.icons = Widget.icons or {}
     local oldicons = Widget.icons
     win:center()
@@ -38,8 +38,12 @@ menu:add("Edit Tab items...").onClick = function(self)
         win:hide()
     end
     ui.Button(win, "Cancel", 290, 228, 80).onClick = function(self)
-        if ui.confirm("All modifications made to the Tab will not be saved.\nAre you sure to continue ?") == "yes" then
+        if ui.confirm("All modifications made to the Combobox will not be saved.\nAre you sure to continue ?") == "yes" then
+            Widget.items = olditems
             Widget.icons = oldicons
+            for i=1, Widget.count do
+                Widget.items[i]:loadicon(oldicons[i])
+            end
             win:hide()
         end
     end
@@ -76,6 +80,7 @@ menu:add("Edit Tab items...").onClick = function(self)
             gb:hide()
         end
     end
+    
     ui.Button(gb, "\xe2\x96\xb4", entry2.x + entry2.width + 2, entry2.y-1, 14, 12).onClick = function(self)
         local pos = tonumber(entry2.text)
         if pos > 1 then
@@ -97,7 +102,7 @@ menu:add("Edit Tab items...").onClick = function(self)
             list.selected.index = pos+1
             list:onSelect(list.selected)
         end
-    end
+    end    
 
     function list:onSelect(item)
         gb:show()
@@ -124,8 +129,8 @@ menu:add("Edit Tab items...").onClick = function(self)
             ico:load(file.fullpath)
             ico:show()
             icobtn:show()
-            panel.border = false
             Widget.style = "icons"
+            panel.border = false
         end
     end
 
@@ -152,7 +157,7 @@ end
 menu:add("Clear all items").onClick = function(self)
     if Widget.count and ui.confirm("Are you sure to remove all Tab items ?") == "yes" then
         Widget:clear()
-        inspector.panels.Tab.widgets.selected.update(Widget)
+        inspector.panels.Combobox.widgets.selected.update(Widget)
     end
 end
 
