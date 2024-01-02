@@ -23,41 +23,12 @@ GUI RAD designer for LuaRT
   
 ## :small_blue_diamond:Installation
 
-#### Method 1 : RTBuilder release package :package:
+#### RTBuilder release package :package:
 
 The preferred way to install RTBuilder is to download the latest release package available on GitHub.  
 Be sure to download the right platform version as your LuaRT installation, either `x86` or `x64`
 Just unpack the downloaded archive and extract its content in the folder of your choice.
   
-#### Method 2 : RTBuilder from sources using Microsoft C++ compiler :gear:
-
-All you need to build RTBuilder from sources is a valid installation of [LuaRT](https://github.com/samyeyo/LuaRT)
-
-First clone the RTBuilder module repository (or manualy download the repository as ZIP file) :
-```
-git clone https://github.com/samyeyo/RTBuilder.git
-```
-
-Then go to the root directory of the repository and type `nmake`
-
-It will try to autodetect the LuaRT path and platform, and if it failed, you can still set the `LUART_PATH` directory in the `Makefile`  
-If everything went right, it will produce `RTBuilder.exe`.
-
-#### Method 3 : RTBuilder from sources using Mingw-w64 compiler :gear:
-
-Be sure to have compiled LuaRT using the Mingw-w64 compiler. See instructions on [LuaRT](https://github.com/samyeyo/LuaRT) repository.
-
-Clone the RTBuilder module repository (or manualy download the repository as ZIP file) :
-```
-git clone https://github.com/samyeyo/RTBuilder.git
-```
-
-Then go to the root directory of the repository and type `make`
-
-It will try to autodetect the LuaRT path and platform, and if it failed, you can still set the `LUART_PATH` directory in the `GNUmakefile`  
-If everything went right, it will produce `RTBuilder.exe`.
-
-
 ## :small_blue_diamond:Documentation
   
 RTBuilder should be easy to use :
