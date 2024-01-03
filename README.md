@@ -34,10 +34,10 @@ Just unpack the downloaded archive and extract its content in the folder of your
   
 RTBuilder should be easy to use :
 - Put the desired widgets on the Window, move, resize, and set properties as needed.
+- Right click on widgets or on the Window currently edited to show a context menu with commands specific to the widget.
 - Save the Window as a Lua file using the `Window\Save` menu command
 - To make the saved Window available in your Lua scripts, just `require()` for it, and it will return a `Window` LuaRT object ready to use.
 - For more information on the LuaRT **ui** module, read the [ui module documentation](http://www.luart.org/doc/ui/index.html)
-
 
 ## :small_blue_diamond:License
   
