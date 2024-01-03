@@ -1,12 +1,13 @@
 <div align="center">
 
 ![RTBuilder][title]  
-GUI RAD designer for LuaRT
 
 [![LuaRT module](https://badgen.net/badge/Made%20with/LuaRT/yellow)](https://www.luart.org/)
 ![Windows](https://badgen.net/badge/Windows/Vista%20and%20later/blue?icon=windows)
 [![LuaRT license](https://badgen.net/badge/License/MIT/green)](#license)
 [![Twitter Follow](https://img.shields.io/twitter/follow/__LuaRT__?style=social)](https://www.twitter.com/__LuaRT__)
+
+![Demo][demo] 
 
 [Features](#small_blue_diamondfeatures) |
 [Installation](#small_blue_diamondinstallation) |
@@ -46,3 +47,4 @@ RTBuilder for LuaRT is open source, released under the MIT License.
 See full copyright notice in the LICENSE file.
 
 [title]: contrib/RTBuilder.png
+[demo]: contrib/example.png
