@@ -29,7 +29,12 @@
 The preferred way to install RTBuilder is to download the latest release package available on GitHub.  
 Be sure to download the right platform version as your LuaRT installation, either `x86` or `x64`
 Just unpack the downloaded archive and extract its content in the folder of your choice.
-  
+
+#### Running RTBuilder using LuaRT interpreter
+
+RTBuilder release package provides a compiled LuaRT executable that embeds all dependencies (you can use it as a standalone app, on a USB key,...)
+If you want to modify or extend RTBuilder, you can use the `RTBuilder.wlua` script to launch it with the `wluart.exe` interpreter.
+
 ## :small_blue_diamond:Documentation
   
 RTBuilder should be easy to use :
