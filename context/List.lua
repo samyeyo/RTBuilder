@@ -139,7 +139,7 @@ menu:add("Edit List items...").onClick = function(self)
         ico:hide()
         panel.border = true
         self:hide()
-        Widget.icons[sel.index] = nil
+        table.remove(Widget.icon, sel.index)
     end
 
     panel.onClick = ico.onClick
