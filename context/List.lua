@@ -65,16 +65,16 @@ menu:add("Edit List items...").onClick = function(self)
     end
     
     ui.Button(gb, "Delete Item", 60, 148, 80).onClick = function(self)
-        local pos = tonumber(entry2.text)-1
-        if pos == 0 then pos = 1 end
-        local sel = list.selected.index
-        table.remove(Widget.icons, sel)
+        local pos = tonumber(entry2.text)
+        local sel = list.selected
+        Widget.icons[pos] = nil
         list:remove(sel)
         if list.count > 0 then
-            list.selected = list.items[pos]
+            list.selected = list.items[pos-1]
         else
             gb:hide()
-        end
+        end        
+
     end
     ui.Button(gb, "\xe2\x96\xb4", entry2.x + entry2.width + 2, entry2.y-1, 14, 12).onClick = function(self)
         local pos = tonumber(entry2.text)
@@ -160,6 +160,7 @@ end
 menu:add("Clear all items").onClick = function(self)
     if Widget.count and ui.confirm("Are you sure to remove all Tab items ?") == "yes" then
         Widget:clear()
+        Widget.icons = {}
         inspector.panels.List.widgets.selected.update(Widget)
     end
 end
