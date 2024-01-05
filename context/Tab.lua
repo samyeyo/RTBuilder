@@ -154,7 +154,7 @@ menu:add("Center").onClick = function(self)
 end
 
 menu:add("Clear all items").onClick = function(self)
-    if Widget.count and ui.confirm("Are you sure to remove all Tab items ?") == "yes" then
+    if Widget.count and ui.confirm("Are you sure to remove all List items ?") == "yes" then
         Widget:clear()
         Widget.icons = {}
         inspector.panels.Tab.widgets.selected.update(Widget)
