@@ -17,6 +17,7 @@ menu:add("Edit lines...").onClick = function(self)
         edit.fontstyle = Widget.fontstyle
         edit.text = edit.text
     end
+    edit.wordwrap = Widget.wordwrap
     edit.align = "top"
     edit.height = 230
     
