@@ -63,8 +63,6 @@ menu:add("Edit List items...").onClick = function(self)
         local sel = list.selected
         sel.text = self.text
     end
-
-    require "console"
     
     ui.Button(gb, "Delete Item", 60, 148, 80).onClick = function(self)
         local pos = tonumber(entry2.text)
