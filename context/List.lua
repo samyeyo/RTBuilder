@@ -63,18 +63,24 @@ menu:add("Edit List items...").onClick = function(self)
         local sel = list.selected
         sel.text = self.text
     end
+
+    require "console"
     
     ui.Button(gb, "Delete Item", 60, 148, 80).onClick = function(self)
         local pos = tonumber(entry2.text)
         local sel = list.selected
-        Widget.icons[pos] = nil
-        list:remove(sel)
-        if list.count > 0 then
-            list.selected = list.items[pos-1]
-        else
-            gb:hide()
-        end        
-
+        if sel then
+            Widget.icons[pos] = nil
+            for i=pos, list.count do
+                Widget.icons[i] = Widget.icons[i+1] or nil
+            end        
+            list:remove(sel)
+            if list.count > 0 then
+                list.selected = list.items[pos-1]
+            else
+                gb:hide()
+            end        
+        end
     end
     ui.Button(gb, "\xe2\x96\xb4", entry2.x + entry2.width + 2, entry2.y-1, 14, 12).onClick = function(self)
         local pos = tonumber(entry2.text)
@@ -158,7 +164,7 @@ menu:add("Sort items in inverse order\xe2\x96\xbe").onClick = function(self)
 end
 
 menu:add("Clear all items").onClick = function(self)
-    if Widget.count and ui.confirm("Are you sure to remove all Tab items ?") == "yes" then
+    if Widget.count and ui.confirm("Are you sure to remove all List items ?") == "yes" then
         Widget:clear()
         Widget.icons = {}
         inspector.panels.List.widgets.selected.update(Widget)

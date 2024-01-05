@@ -67,13 +67,18 @@ menu:add("Edit Tab items...").onClick = function(self)
     ui.Button(gb, "Delete Item", 60, 148, 80).onClick = function(self)
         local pos = tonumber(entry2.text)
         local sel = list.selected
-        Widget.icons[pos] = nil
-        list:remove(sel)
-        if list.count > 0 then
-            list.selected = list.items[pos-1]
-        else
-            gb:hide()
-        end        
+        if sel then
+            Widget.icons[pos] = nil
+            for i=pos, list.count do
+                Widget.icons[i] = Widget.icons[i+1] or nil
+            end        
+            list:remove(sel)
+            if list.count > 0 then
+                list.selected = list.items[pos-1]
+            else
+                gb:hide()
+            end        
+        end     
     end
     ui.Button(gb, "\xe2\x96\xb4", entry2.x + entry2.width + 2, entry2.y-1, 14, 12).onClick = function(self)
         local pos = tonumber(entry2.text)
