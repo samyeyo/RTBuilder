@@ -201,6 +201,8 @@ function properties.boolean(panel, obj, property)
     return widget
 end
 
+local trackvalues = { x = true, y = true, width = true, height = true }
+
 function properties.entry(panel, obj, property)
     local widget = ui.Entry(panel, "test", 100, panel.pos-3, 100, 23)
     widget.onSelect = function (self)
@@ -218,13 +220,20 @@ function properties.entry(panel, obj, property)
                     Widgets[lastvalue] = nil
                 end
             else
-                local func = function() tracked[property] = widget.text end
+                local func = function() 
+                    tracker:stop()
+                    tracked[property] = widget.text;
+                    tracker:start(tracked)
+                    if not trackvalues[property] then
+                        autosize(tracked)
+                    end
+                    ui.update()
+                end
                 if not pcall(func) then
                     sys.beep()
                     tracked[property] = lastvalue
                     widget.text = lastvalue
                 end
-                autosize(tracked)
             end
         end
     end
