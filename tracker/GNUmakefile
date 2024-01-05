@@ -21,7 +21,7 @@
 PLATFORM ?= x64
 
 #---- LuaRT installation path (set it manually if autodetection fails)
-LUART_PATH=..\..\LuaRT
+#LUART_PATH=
 
 ifeq ($(LUART_PATH),)
 LUART_PATH=$(shell luart.exe -e "print(sys.registry.read('HKEY_CURRENT_USER', 'Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\LuaRT', 'InstallLocation', false) or '')")
@@ -40,13 +40,11 @@ LUART_LIB = -L$(LUART_PATH)\lib
 
 ifeq ($(filter $(CLEAN),$(MAKECMDGOALS)),)
 ifeq ($(PLATFORM), x86)
-$(info --------------------------------- Building for Windows x86 Platform)
  ARCH = -m32 -march=pentium4 -msse -msse2 -mmmx -fno-unwind-tables -fno-asynchronous-unwind-tables
  TARGET = pe-i386
 endif
 ifeq ($(PLATFORM), x64)
 ifneq ($(MAKECMDGOALS),x86)
-$(info --------------------------------- Building for Windows x64 Platform)
 endif
  ARCH = -m64 -mavx2 -mfma -Wno-int-to-pointer-cast -Wno-pointer-to-int-cast -Wno-int-conversion
  TARGET = pe-x86-64
@@ -94,8 +92,10 @@ x86: clean
 	@$(MAKE) "PLATFORM=x86"
 
 clean:
-	@$(RM) src\*.o >nul 2>&1
-	@$(RM) $(MODULE) >nul 2>&1
+	@chcp 65001 >nul 2>&1
+	@echo|set /p dummy="▸  Cleaning $(MODULE)... "
+	@-$(RM) src\*.o >nul 2>&1
+	@-$(RM) $(MODULE).dll >nul 2>&1
 	@echo ✓
 
 .PHONY: clean all

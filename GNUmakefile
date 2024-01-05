@@ -13,7 +13,7 @@
 #---- LuaRT toolchain path
 LUART_PATH=..\LuaRT
 
-TARGET=		RTBuilder.exe
+TARGET=		RTBuilder
 VERSION=	0.5
 SRC= 		src/main.wlua src\version.lua src/dump.lua src/widgets.wlua  
 LIBS=		-ltracker -ljson
@@ -24,7 +24,7 @@ RM= del /Q
 CP= copy /Y
 LC= $(LUART_PATH)\bin\rtc.exe
 
-all: $(TARGET)
+all: $(TARGET).exe
 
 infomodule: 
 	@chcp 65001 >nul 2>&1
@@ -32,27 +32,25 @@ infomodule:
 	@echo|set /p dummy="▸  Building $(TARGET) $(VERSION)	  "
 
 tracker.dll:
-	@$(MAKE) -C tracker\ $(MAKECMDGOALS) --no-print-directory
+	@$(MAKE) -C tracker\ LUART_PATH=$(LUART_PATH) $(MAKECMDGOALS) --no-print-directory
 	@-$(CP) tracker\tracker.dll tracker.dll  2>&1 >nul
 
 src\version.lua:
 	@echo return 'v$(VERSION)' > src\version.lua
 
-$(TARGET): tracker.dll infomodule $(SRC)
+$(TARGET).exe: tracker.dll infomodule $(SRC)
 	@$(LC) $(SRC) -o $@ -i $(ICON) $(LIBS) 2>&1 >nul 
 	@echo|set /p dummy="■"
-	@-$(CP) /Y $(LUART_PATH)\bin\lua54.dll 2>&1 >nul
-	@-$(CP) /Y $(LUART_PATH)\modules\webview\webview.dll widgets\webview.dll 2>&1 >nul
-	@-$(CP) /Y $(LUART_PATH)\modules\canvas\canvas.dll widgets\canvas.dll 2>&1 >nul
-	@$(RM) tracker.dll 2>&1 >nul
+	@-$(CP) $(LUART_PATH)\bin\lua54.dll 2>&1 >nul
+	@-$(CP) $(LUART_PATH)\modules\webview\webview.dll widgets\webview.dll 2>&1 >nul
+	@-$(CP) $(LUART_PATH)\modules\canvas\canvas.dll widgets\canvas.dll 2>&1 >nul
+	@-$(RM) tracker.dll 2>&1 >nul
 	@echo|set /p dummy="■"
 	@cmd /c echo.
 	
 clean:
 	@chcp 65001 >nul 2>&1
 	@echo|set /p dummy="▸  Cleaning $(TARGET)... "
-	@$(RM) $(TARGET) 2>&1 >nul
-	@cd tracker
+	@-$(RM) $(TARGET).exe >nul 2>&1
 	@$(MAKE) -C tracker\ clean --no-print-directory 2>&1 >nul
-	@cd ..
 	@echo ✓

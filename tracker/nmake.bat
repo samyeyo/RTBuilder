@@ -1,4 +1,14 @@
 @echo off
 @setlocal EnableDelayedExpansion
 
-for /f %%i in ('luart.exe -e "print(sys.registry.read('HKEY_CURRENT_USER','Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\LuaRT','InstallLocation',false)or'')"') do nmake.exe /nologo LUART_PATH=%%i %1
+
+"luart.exe">"%TEMP%\CommandOutput.tmp"
+if errorlevel 1 goto Failed
+
+for /f %%i in ('luart.exe -e "print(sys.registry.read('HKEY_CURRENT_USER','Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\LuaRT','InstallLocation',false)or'')"') do (
+    nmake.exe /nologo LUART_PATH=%%i %1 
+    exit /b 0
+)
+
+:Failed
+nmake.exe /nologo %1 %2 %3
