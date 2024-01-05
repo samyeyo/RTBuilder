@@ -14,6 +14,7 @@ end
 
 return inspector:register(Edit, {
     readonly = inspector.properties.boolean,
+    wordwrap = inspector.properties.boolean,
     text = Edit_text,
     rtf = inspector.properties.boolean
 }, { column = true, line = true, caret = true, modified = true, richtext = true })
