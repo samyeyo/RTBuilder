@@ -6,3 +6,5 @@
 *.sig
 *.zip
 *.obj
+*.obj
+*.pdb
