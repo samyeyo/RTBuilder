@@ -179,10 +179,11 @@ menu:add("Edit Tree items...").onClick = function(self)
     
     function ico:onClick()
         local file = ui.opendialog("Load icon...", false, "Icon files (*.ico)|*.ico|All files (*.*)|*.*")
-        if file then
-            local sel = tree.selected
+        local sel = tree.selected
+        if sel and file then
             local idx = sel.index
             Widget.icons[idx] = file.fullpath:gsub("\\", "/")
+            sel:loadicon(file)
             ico:load(file.fullpath)
             ico:show()
             icobtn:show()
