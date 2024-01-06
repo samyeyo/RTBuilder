@@ -17,6 +17,8 @@ mainWindow.menu = ui.Menu()
 package.path = package.path..sys.currentdir..'/?/init.lua;'
 package.cpath = package.cpath..sys.currentdir..'/widgets/?.dll;'
 
+local set_shortcuts
+
 for entry in sys.Directory(sys.currentdir.."/context"):list("*.lua") do
     onContext[entry.name:gsub("%.lua", "")] = loadfile(entry.fullpath)()
 end
@@ -97,6 +99,7 @@ function init_formwindow(win)
     end
     win.onMinimize = function(self) mainWindow:minimize() end  
     win.onRestore = function(self) mainWindow:restore() end  
+    set_shortcuts(win)
     win.tracker = Tracker(win)
     tracker = win.tracker
 end
@@ -213,17 +216,21 @@ function mainWindow:onRestore()
     end
 end
 
-------------------- Main window keyboard shortcuts
-mainWindow:shortcut("o", WindowOpen.onClick, true)
-mainWindow:shortcut("s", WindowSave.onClick, true)
-
+------------------- Keyboard shortcuts
+set_shortcuts =  function(win)
+    win:shortcut("o", WindowOpen.onClick, true)
+    win:shortcut("s", WindowSave.onClick, true)
+end
 
 ------------------- Main window default position
 mainWindow:center()
 mainWindow.y = 60
 mainWindow.topmost = true
+set_shortcuts(mainWindow)
 
 inspector = require "inspector"
+set_shortcuts(inspector)
+
 require "widgets"
 
 mainWindow:show()
