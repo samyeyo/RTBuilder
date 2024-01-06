@@ -221,11 +221,15 @@ function properties.entry(panel, obj, property)
                 end
             else
                 local func = function() 
-                    tracker:stop()
-                    tracked[property] = widget.text;
-                    tracker:start(tracked)
-                    if not trackvalues[property] then
-                        autosize(tracked)
+                    if tracked.type ~= "Window" then
+                        tracker:stop()
+                        tracked[property] = widget.text;
+                        tracker:start(tracked)
+                        if not trackvalues[property] then
+                            autosize(tracked)
+                        end
+                    else
+                        tracked[property] = widget.text;
                     end
                     ui.update()
                 end
