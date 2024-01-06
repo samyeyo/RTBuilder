@@ -118,7 +118,11 @@ local function save(file, name, widget)
             file:write(widget.parent.name..', {}, '..widget.x..", "..widget.y..', '..widget.width..", "..widget.height..")\n")
             file:write(name..".items = "..value2str(widget, "items").."\n")
         elseif widget.text ~= nil or widget.img ~= nil then
-            file:write(widget.parent.name..', [['..(widget.text or widget.img)..']], '..widget.x..", "..widget.y..', '..widget.width..", "..widget.height..")\n")
+		if type(widget.parent) == "TabItem" then
+			file:write(widget.parent.owner.name..'.items['..widget.parent.index..']'..', [['..(widget.text or widget.img)..']], '..widget.x..", "..widget.y..', '..widget.width..", "..widget.height..")\n")
+		else
+			file:write(widget.parent.name..', [['..(widget.text or widget.img)..']], '..widget.x..", "..widget.y..', '..widget.width..", "..widget.height..")\n")
+		end
         else
             file:write(widget.parent.name..', '..widget.x..", "..widget.y..', '..widget.width..", "..widget.height..")\n")
         end
