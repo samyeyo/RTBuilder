@@ -118,7 +118,11 @@ local function save(file, name, widget)
             file:write(widget.parent.name..', {}, '..widget.x..", "..widget.y..', '..widget.width..", "..widget.height..")\n")
             file:write(name..".items = "..value2str(widget, "items").."\n")
         elseif widget.text ~= nil or widget.img ~= nil then
-            file:write(widget.parent.name..', [['..(widget.text or widget.img)..']], '..widget.x..", "..widget.y..', '..widget.width..", "..widget.height..")\n")
+            if widget.parent and type(widget.parent) == "TabItem" then
+                file:write(widget.parent.owner.name..'.items['..widget.parent.index..']'..', [['..widget.text..']], '..widget.x..", "..widget.y..', '..widget.width..", "..widget.height..")\n")
+            else
+                file:write(widget.parent.name..', [['..(widget.text or widget.img)..']], '..widget.x..", "..widget.y..', '..widget.width..", "..widget.height..")\n")
+            end
         else
             file:write(widget.parent.name..', '..widget.x..", "..widget.y..', '..widget.width..", "..widget.height..")\n")
         end
@@ -142,10 +146,12 @@ local function save(file, name, widget)
     end
 end
 
+require "console"
+
 function saveWindow()
     local file
 	file = filename and sys.File(filename) or ui.savedialog("Save Window as...", false, "Lua files (*.lua, *.wlua)|*.lua;*.wlua|All files (*.*)|*.*") 
-	if file == nil or (file.exists and ui.confirm(file.name.." already exists. Continue and overwrite its content ?") ~= "yes") then
+	if file == nil or ((not filename) and file.exists and ui.confirm(file.name.." already exists. Continue and overwrite its content ?") ~= "yes") then
 		return false
 	end
     tracker:stop()
