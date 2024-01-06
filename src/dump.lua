@@ -146,8 +146,6 @@ local function save(file, name, widget)
     end
 end
 
-require "console"
-
 function saveWindow()
     local file
 	file = filename and sys.File(filename) or ui.savedialog("Save Window as...", false, "Lua files (*.lua, *.wlua)|*.lua;*.wlua|All files (*.*)|*.*") 
