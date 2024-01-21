@@ -225,7 +225,6 @@ end
 ------------------- Main window default position
 mainWindow:center()
 mainWindow.y = 60
-mainWindow.topmost = true
 set_shortcuts(mainWindow)
 
 inspector = require "inspector"
@@ -235,8 +234,8 @@ require "widgets"
 
 mainWindow:show()
 
-if #arg > 1 or (embed and #arg > 0) then
-    local openfile = sys.File(embed and arg[1] or arg[2])
+if #arg > 0 then
+    local openfile = sys.File(arg[1])
     if openfile.exists then
         do_openfile(openfile)
     end

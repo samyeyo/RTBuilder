@@ -5,7 +5,6 @@ require "widgets"
 inspector = ui.Window(mainWindow, "Widget properties", "fixed", 210, 500)
 inspector.x = mainWindow.x + mainWindow.width + 30
 inspector.y = mainWindow.y + 30 + mainWindow.height
-inspector.topmost = true
 
 inspector.properties = require "inspector.properties"
 inspector.registry = {}
@@ -80,7 +79,7 @@ function inspector.Update(tracked)
         return
     end
     local panel = inspector.panels[tracked.type]
-    inspector:loadicon(sys.File(embed and arg[0] or arg[1]).path.."/resources/"..tracked.type..".ico")
+    inspector:loadicon(sys.File(embed and arg[-1] or arg[0]).path.."/resources/"..tracked.type..".ico")
     for widget in each(panel.widgets) do
         if widget.update then
             widget.update(tracked)
