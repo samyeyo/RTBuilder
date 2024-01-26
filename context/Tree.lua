@@ -51,7 +51,7 @@ menu:add("Edit Tree items...").onClick = function(self)
     ui.Button(win, "OK", 300, 268, 80).onClick = function(self)
         Widget:clear()
         assign(tree, Widget)
-        if #Widget.icons > 0 then
+        if next(Widget.icons) then
             Widget.style = "icons"
         end
         inspector.Update(Widget)
